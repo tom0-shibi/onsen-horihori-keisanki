@@ -3,44 +3,70 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>ウマ娘ゆこま温泉郷シナリオ計算ツール</title>
+  <title>ウマ娘ゆこま温泉郷 シナリオ計算ツール</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header>
-    <h1>ウマ娘ゆこま温泉郷シナリオ計算ツール</h1>
-    <p class="subtitle">練習1回ごとの掘削力・掘削量を計算します（GitHub Pages 対応）</p>
+  <header class="site-header">
+    <div class="header-left">
+      <img src="images/onsen-icon.png" alt="" class="logo" onerror="this.style.display='none'">
+      <div>
+        <h1>ウマ娘ゆこま温泉郷 シナリオ計算ツール</h1>
+        <p class="subtitle">1回あたりの掘削力／掘削量を可視化（静的版）</p>
+      </div>
+    </div>
   </header>
 
-  <main>
-    <section id="inputs" class="panel">
+  <main class="container">
+    <!-- 入力: すべて wide（縦） -->
+    <section class="panel input-panel">
       <h2>入力</h2>
 
-      <div class="grid-inputs">
-        <div class="box">
-          <h3>基礎能力（ランク）</h3>
+      <div class="grid-2-vertical">
+        <div class="card wide">
+          <h3>基礎能力</h3>
           <div class="row">
-            <label>スピ<select id="rank-speed" class="rank-select"></select></label>
-            <label>スタ<select id="rank-stamina" class="rank-select"></select></label>
-            <label>パワ<select id="rank-power" class="rank-select"></select></label>
-            <label>根性<select id="rank-guts" class="rank-select"></select></label>
-            <label>賢さ<select id="rank-wit" class="rank-select"></select></label>
+            <label>スピ
+              <select id="rank-speed" class="rank-select"></select>
+            </label>
+            <label>スタ
+              <select id="rank-stamina" class="rank-select"></select>
+            </label>
+            <label>パワ
+              <select id="rank-power" class="rank-select"></select>
+            </label>
+            <label>根性
+              <select id="rank-guts" class="rank-select"></select>
+            </label>
+            <label>賢さ
+              <select id="rank-wit" class="rank-select"></select>
+            </label>
           </div>
         </div>
 
-        <div class="box">
-          <h3>因子（数値で選択）</h3>
+        <div class="card wide">
+          <h3>因子</h3>
           <div class="row">
-            <label>スピ<select id="factor-speed" class="factor-select"></select></label>
-            <label>スタ<select id="factor-stamina" class="factor-select"></select></label>
-            <label>パワ<select id="factor-power" class="factor-select"></select></label>
-            <label>根性<select id="factor-guts" class="factor-select"></select></label>
-            <label>賢さ<select id="factor-wit" class="factor-select"></select></label>
+            <label>スピ
+              <select id="factor-speed" class="factor-select"></select>
+            </label>
+            <label>スタ
+              <select id="factor-stamina" class="factor-select"></select>
+            </label>
+            <label>パワ
+              <select id="factor-power" class="factor-select"></select>
+            </label>
+            <label>根性
+              <select id="factor-guts" class="factor-select"></select>
+            </label>
+            <label>賢さ
+              <select id="factor-wit" class="factor-select"></select>
+            </label>
           </div>
         </div>
 
-        <div class="box">
-          <h3>シナリオリンク（チェック）</h3>
+        <div class="card wide">
+          <h3>シナリオリンク</h3>
           <div class="row wrap">
             <label><input type="checkbox" id="link-teio"> テイオー (砂)</label>
             <label><input type="checkbox" id="link-bourbon"> ブルボン (土)</label>
@@ -50,16 +76,18 @@
           </div>
         </div>
 
-        <div class="box">
+        <div class="card wide">
           <h3>選択中の源泉</h3>
-          <label>
-            <select id="gensen-select">
-              <option value="">-- 選択してください --</option>
-            </select>
-          </label>
+          <div class="row">
+            <label class="full">
+              <select id="gensen-select">
+                <option value="">-- 源泉を選択 --</option>
+              </select>
+            </label>
+          </div>
           <div id="gensen-info" class="gensen-info">
-            <div id="gensen-image-placeholder">画像</div>
-            <div class="gensen-stats">
+            <div id="gensen-image-placeholder" class="gensen-image">画像</div>
+            <div class="gensen-meta">
               <div><strong id="gensen-name"></strong></div>
               <div>砂: <span id="gensen-sand">-</span></div>
               <div>土: <span id="gensen-ground">-</span></div>
@@ -71,27 +99,41 @@
       </div>
     </section>
 
-    <section id="outputs" class="panel">
-      <h2>出力（地層別）</h2>
+    <!-- 出力 -->
+    <section class="panel output-panel">
+      <h2>出力</h2>
 
-      <div class="settings-row">
-        <label>装備Lv:
-          <select id="equip-level"></select>
-        </label>
+      <div id="results" class="results-area"></div>
+
+      <!-- 掘削完了までのターン数セクション -->
+      <div class="panel small" id="turns-panel">
+        <h3>掘削完了までのターン数</h3>
+        <div class="row">
+          <label class="full">掘削状況（残量）
+            <input type="number" id="current-remaining" min="0" />
+          </label>
+        </div>
+        <div class="muted-note" style="margin-top:6px;">
+          ※初期値は選択中の源泉の合計値です。最大 8 ターン分を表示します。
+        </div>
+
+        <div id="turns-table-area" style="margin-top:8px;overflow:auto"></div>
+        <div id="turns-summary" style="margin-top:8px;font-weight:600"></div>
       </div>
-
-      <div id="results" class="results-grid"></div>
     </section>
 
-    <section id="notes" class="panel small">
-      <h2>メモ / 備考</h2>
-      <p>・源泉の画像は <code>/images/{gensen_slug}.png</code> のような名前で置くと自動表示されます（例: <code>hito-no-yu.png</code>）。<br>
-      ・サポカ人数は 1〜4人分の計算結果を表示します。</p>
+    <!-- メモ -->
+    <section class="panel memo-panel">
+      <h3>メモ</h3>
+      <textarea id="user-memo" placeholder="ここにメモを入力（自動保存されます）"></textarea>
+      <div class="memo-actions">
+        <button id="memo-clear">クリア</button>
+      </div>
     </section>
   </main>
 
-  <footer>
-    <small>作成: ウマ娘ゆこま温泉郷シナリオ計算ツール — 静的版 (HTML+JS)</small>
+  <footer class="site-footer">
+    <small>静的版 — HTML + JavaScript · データは CSV で管理</small>
   </footer>
 
   <script src="app.js"></script>
