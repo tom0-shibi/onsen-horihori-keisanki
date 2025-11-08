@@ -1,1 +1,99 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ウマ娘ゆこま温泉郷シナリオ計算ツール</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>ウマ娘ゆこま温泉郷シナリオ計算ツール</h1>
+    <p class="subtitle">練習1回ごとの掘削力・掘削量を計算します（GitHub Pages 対応）</p>
+  </header>
 
+  <main>
+    <section id="inputs" class="panel">
+      <h2>入力</h2>
+
+      <div class="grid-inputs">
+        <div class="box">
+          <h3>基礎能力（ランク）</h3>
+          <div class="row">
+            <label>スピ<select id="rank-speed" class="rank-select"></select></label>
+            <label>スタ<select id="rank-stamina" class="rank-select"></select></label>
+            <label>パワ<select id="rank-power" class="rank-select"></select></label>
+            <label>根性<select id="rank-guts" class="rank-select"></select></label>
+            <label>賢さ<select id="rank-wit" class="rank-select"></select></label>
+          </div>
+        </div>
+
+        <div class="box">
+          <h3>因子（数値で選択）</h3>
+          <div class="row">
+            <label>スピ<select id="factor-speed" class="factor-select"></select></label>
+            <label>スタ<select id="factor-stamina" class="factor-select"></select></label>
+            <label>パワ<select id="factor-power" class="factor-select"></select></label>
+            <label>根性<select id="factor-guts" class="factor-select"></select></label>
+            <label>賢さ<select id="factor-wit" class="factor-select"></select></label>
+          </div>
+        </div>
+
+        <div class="box">
+          <h3>シナリオリンク（チェック）</h3>
+          <div class="row wrap">
+            <label><input type="checkbox" id="link-teio"> テイオー (砂)</label>
+            <label><input type="checkbox" id="link-bourbon"> ブルボン (土)</label>
+            <label><input type="checkbox" id="link-tran"> トラン (土)</label>
+            <label><input type="checkbox" id="link-tarmae"> タルマエ (岩)</label>
+            <label><input type="checkbox" id="link-acute"> アキュ (岩)</label>
+          </div>
+        </div>
+
+        <div class="box">
+          <h3>選択中の源泉</h3>
+          <label>
+            <select id="gensen-select">
+              <option value="">-- 選択してください --</option>
+            </select>
+          </label>
+          <div id="gensen-info" class="gensen-info">
+            <div id="gensen-image-placeholder">画像</div>
+            <div class="gensen-stats">
+              <div><strong id="gensen-name"></strong></div>
+              <div>砂: <span id="gensen-sand">-</span></div>
+              <div>土: <span id="gensen-ground">-</span></div>
+              <div>岩: <span id="gensen-rock">-</span></div>
+              <div>合計: <span id="gensen-total">-</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="outputs" class="panel">
+      <h2>出力（地層別）</h2>
+
+      <div class="settings-row">
+        <label>装備Lv:
+          <select id="equip-level"></select>
+        </label>
+      </div>
+
+      <div id="results" class="results-grid"></div>
+    </section>
+
+    <section id="notes" class="panel small">
+      <h2>メモ / 備考</h2>
+      <p>・源泉の画像は <code>/images/{gensen_slug}.png</code> のような名前で置くと自動表示されます（例: <code>hito-no-yu.png</code>）。<br>
+      ・サポカ人数は 1〜4人分の計算結果を表示します。</p>
+    </section>
+  </main>
+
+  <footer>
+    <small>作成: ウマ娘ゆこま温泉郷シナリオ計算ツール — 静的版 (HTML+JS)</small>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
